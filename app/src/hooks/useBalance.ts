@@ -5,7 +5,8 @@ export const useBalance = () => {
 
   const fetchBalance = async () => {
     try {
-      const response = await fetch('http://localhost/ueh_pass/backend/controllers/api_get_balance.php');
+      // ĐÃ THAY LOCALHOST BẰNG ĐỊA CHỈ NHÀ MỚI (CÓ CHỮ S ĐỂ BẢO MẬT)
+      const response = await fetch('https://ueh-pass-potts.rf.gd/backend/controllers/api_get_balance.php');
       const result = await response.json();
       if (result.status === 'success') setBalance(result.data.balance);
     } catch (error) {
