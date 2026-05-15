@@ -20,7 +20,7 @@ export const TopUpScreen: React.FC = () => {
   // 2. Hàm lấy số dư thật từ Backend InfinityFree
   const fetchBalance = async () => {
     try {
-      const response = await fetch('http://ueh-pass-potts.rf.gd/backend/controllers/api_get_balance.php');
+      const response = await fetch('https://ueh-pass-potts.rf.gd/backend/controllers/api_get_balance.php');
       const result = await response.json();
       if (result.status === 'success') {
         const newBalance = result.data.balance;
