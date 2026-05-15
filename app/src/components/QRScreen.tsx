@@ -14,14 +14,10 @@ export const QRScreen: React.FC = () => {
   // 1. Khai báo biến chứa tiền thật
   const [realBalance, setRealBalance] = useState(0);
 
-  // 2. Hàm gọi API lấy số dư từ XAMPP (Có bùa Ngrok)
+  // 2. Hàm gọi API lấy số dư từ InfinityFree
   const fetchBalance = async () => {
     try {
-      const response = await fetch('https://abstain-spookily-aptitude.ngrok-free.dev/ueh_pass/backend/controllers/api_get_balance.php', {
-        headers: {
-          'ngrok-skip-browser-warning': 'true'
-        }
-      });
+      const response = await fetch('http://ueh-pass-potts.rf.gd/backend/controllers/api_get_balance.php');
       const result = await response.json();
       if (result.status === 'success') {
         setRealBalance(result.data.balance);

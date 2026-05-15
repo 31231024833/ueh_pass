@@ -11,14 +11,10 @@ import { motion } from 'motion/react';
 export const WalletScreen: React.FC = () => {
   const [realBalance, setRealBalance] = useState(0);
 
-  // Gọi API lấy số dư với Bùa Ngrok
+  // Gọi API lấy số dư từ InfinityFree
   const fetchBalance = async () => {
     try {
-      const response = await fetch('https://abstain-spookily-aptitude.ngrok-free.dev/ueh_pass/backend/controllers/api_get_balance.php', {
-        headers: {
-          'ngrok-skip-browser-warning': 'true' 
-        }
-      });
+      const response = await fetch('http://ueh-pass-potts.rf.gd/backend/controllers/api_get_balance.php');
       const result = await response.json();
       if (result.status === 'success') {
         setRealBalance(Number(result.data.balance) || 0);
@@ -48,7 +44,7 @@ export const WalletScreen: React.FC = () => {
       >
         <div className="absolute -top-12 -right-12 w-32 h-32 bg-ueh-green rounded-full opacity-50 blur-xl"></div>
         <div className="relative z-10 space-y-4">
-          <p className="text-sm text-white/70 font-medium">Số dư khả dụng (Howard Potts)</p>
+          <p className="text-sm text-white/70 font-medium">Số dư khả dụng ({USER_DATA.name})</p>
           
           {/* Nơi hiện số dư thật */}
           <h2 className="text-4xl font-bold tracking-tight">{Number(realBalance).toLocaleString('vi-VN')} ₫</h2>

@@ -17,17 +17,22 @@ export const TopUpScreen: React.FC = () => {
 
   const amounts = [20000, 50000, 100000, 200000, 500000];
 
-  // 2. Hàm lấy số dư thật từ Backend (ĐÃ GẮN BÙA NGROK CHỐNG CHẶN)
+  // 2. Hàm lấy số dư thật từ Backend InfinityFree
   const fetchBalance = async () => {
     try {
-      const response = await fetch('https://abstain-spookily-aptitude.ngrok-free.dev/ueh_pass/backend/controllers/api_get_balance.php', {
-        headers: {
-          'ngrok-skip-browser-warning': 'true' 
-        }
-      });
+      const response = await fetch('http://ueh-pass-potts.rf.gd/backend/controllers/api_get_balance.php');
       const result = await response.json();
       if (result.status === 'success') {
-        setRealBalance(result.data.balance);
+        const newBalance = result.data.balance;
+        
+        // Trick tự động đóng màn hình QR và hiện thông báo khi nạp tiền
+        setRealBalance((prevBalance) => {
+          if (prevBalance > 0 && newBalance > prevBalance) {
+            setShowQR(false); 
+            alert(`🎉 Ting ting! Nạp thành công ${(newBalance - prevBalance).toLocaleString('vi-VN')} ₫ vào ví!`); 
+          }
+          return newBalance;
+        });
       }
     } catch (error) {
       console.error("Lỗi lấy số dư:", error);
@@ -41,7 +46,7 @@ export const TopUpScreen: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 4. Tuyệt chiêu tạo mã VietQR động
+  // 4. Tạo mã VietQR động
   const getVietQR = () => {
     const BANK_ID = "vietinbank"; 
     const ACCOUNT_NO = "100872880702"; 
@@ -88,7 +93,6 @@ export const TopUpScreen: React.FC = () => {
         <div className="space-y-3">
           <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Phương thức thanh toán</h2>
           <div className="flex flex-col gap-3">
-            {/* ĐÃ SỬA LỖI TYPESCRIPT Ở ĐÂY: Thêm desc cho tất cả các item */}
             {[
               { id: 'vnpay', name: 'Ngân hàng / VietQR', icon: Landmark, desc: 'Miễn phí giao dịch' },
               { id: 'momo', name: 'Ví MoMo', icon: 'https://cdn.haitrieu.com/wp-content/uploads/2022/10/Logo-MoMo-Square.png', desc: '' }, 
@@ -112,7 +116,6 @@ export const TopUpScreen: React.FC = () => {
                 </div>
                 <div className="flex-1 text-left">
                   <div className="text-sm font-bold text-slate-800">{method.name}</div>
-                  {/* Bây giờ method nào cũng có desc (dù là chuỗi rỗng), TS sẽ không báo lỗi nữa */}
                   {method.desc && <div className="text-[10px] text-slate-400">{method.desc}</div>}
                 </div>
                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${

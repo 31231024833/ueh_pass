@@ -3,7 +3,7 @@
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
-// THẦN CHÚ Ở ĐÂY: Bổ sung thêm ngrok-skip-browser-warning vào danh sách VIP
+// Bổ sung thêm ngrok-skip-browser-warning vào danh sách VIP
 header("Access-Control-Allow-Headers: Content-Type, ngrok-skip-browser-warning");
 header('Content-Type: application/json; charset=utf-8');
 
@@ -14,8 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 try {
-    // 2. Kết nối Database ueh_pass
-    $pdo = new PDO('mysql:host=localhost;dbname=ueh_pass', 'root', '');
+    // 2. Kết nối Database trên mây InfinityFree
+    $pdo = new PDO('mysql:host=sql301.infinityfree.com;dbname=if0_41925776_ueh_pass', 'if0_41925776', 'lmaHilhINbX');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // 3. Tạm thời lấy số dư của user số '1'
     $user_id = '1';
